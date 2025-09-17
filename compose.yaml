@@ -35,8 +35,8 @@ services:
       # External Storage for attachments
       GRIST_EXTERNAL_ATTACHMENTS_MODE: "snapshots"
 
-      GRIST_OIDC_SP_HOST: https://${GRIST_HOST}
-      GRIST_OIDC_IDP_ISSUER: https://${GRIST_HOST}/keycloak/realms/myrealm
+      GRIST_OIDC_SP_HOST: https://${GRIST_DOMAIN}
+      GRIST_OIDC_IDP_ISSUER: https://${GRIST_DOMAIN}/keycloak/realms/myrealm
       GRIST_OIDC_IDP_SCOPES: openid profile email
 
       # the ID you chose for the Keycloak client
@@ -51,7 +51,7 @@ services:
       - ${PERSIST_DIR}/grist:/persist
     labels:
       - "traefik.http.services.grist.loadbalancer.server.port=8484"
-      - "traefik.http.routers.grist.rule=Host(`${GRIST_HOST}`)"
+      - "traefik.http.routers.grist.rule=Host(`${GRIST_DOMAIN}`)"
       - "traefik.http.routers.grist.tls.certresolver=letsencrypt"
     depends_on:
       grist-db:
@@ -152,7 +152,7 @@ services:
       KC_DB_USERNAME: grist
       KC_DB_SCHEMA: public
 
-      KC_HOSTNAME: ${GRIST_HOST}
+      KC_HOSTNAME: ${GRIST_DOMAIN}
       KC_HTTP_ENABLED: true
       KC_PROXY_HEADERS: xforwarded
       KC_HTTP_RELATIVE_PATH: /keycloak
@@ -166,7 +166,7 @@ services:
       # This healthcheck is a way to wait for Keycloak to be ready. It only checks Keycloak's health once since healthchecks in KC are sometimes weird : https://github.com/keycloak/keycloak/discussions/10575
       test: ["CMD-SHELL", "if [ ! -f /tmp/health.txt ]; then touch /tmp/health.txt && exec 3<>/dev/tcp/127.0.0.1/9000;echo -e 'GET /health/ready HTTP/1.1\r\nhost: http://localhost\r\nConnection: close\r\n\r\n' >&3;if [ $? -eq 0 ]; then echo 'Healthcheck Successful';exit 0;else echo 'Healthcheck Failed';exit 1;fi; else echo \"Healthcheck already executed\"; fi"]
     labels:
-      - "traefik.http.routers.keycloak.rule=Host(`${GRIST_HOST}`) && PathPrefix(`/keycloak`)"
+      - "traefik.http.routers.keycloak.rule=Host(`${GRIST_DOMAIN}`) && PathPrefix(`/keycloak`)"
       - "traefik.http.routers.keycloak.entrypoints=websecure"
       - "traefik.http.routers.keycloak.tls.certresolver=letsencrypt"
       - "traefik.http.services.keycloak.loadbalancer.server.port=8080"
