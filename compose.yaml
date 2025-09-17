@@ -2,6 +2,9 @@ services:
   grist:
     image: gristlabs/grist:latest
     environment:
+      # Enable sandboxing
+      GRIST_SANDBOX_FLAVOR: gvisor
+
       # Forces Grist to only use a single team called 'Example'
       GRIST_SINGLE_ORG: my-grist-team   # alternatively, GRIST_ORG_IN_PATH: "true" for multi-team operation
       # Force users to login (disable anonymous access)
@@ -32,7 +35,7 @@ services:
       # External Storage for attachments
       GRIST_EXTERNAL_ATTACHMENTS_MODE: "snapshots"
 
-      GRIST_OIDC_SP_HOST: http://localhost:8484
+      GRIST_OIDC_SP_HOST: https://${GRIST_HOST}
       GRIST_OIDC_IDP_ISSUER: https://${GRIST_HOST}/keycloak/realms/myrealm
       GRIST_OIDC_IDP_SCOPES: openid profile email
 
