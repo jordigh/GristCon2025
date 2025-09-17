@@ -6,7 +6,7 @@ services:
       GRIST_SANDBOX_FLAVOR: gvisor
 
       # Forces Grist to only use a single team called 'GristCon'
-      GRIST_SINGLE_ORG: GristCon   # alternatively, GRIST_ORG_IN_PATH: "true" for multi-team operation
+      GRIST_SINGLE_ORG: gristcon   # alternatively, GRIST_ORG_IN_PATH: "true" for multi-team operation
       # Force users to login (disable anonymous access)
       GRIST_FORCE_LOGIN: true
       # Default email for the "Admin" account
