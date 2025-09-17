@@ -148,7 +148,7 @@ services:
       KC_DB: postgres
       KC_DB_URL_HOST: kc_postgresql
       KC_DB_URL_DATABASE: keycloak
-      KC_DB_PASSWORD: ${DATBASE_PASSWORD}
+      KC_DB_PASSWORD: ${DATABASE_PASSWORD}
       KC_DB_USERNAME: grist
       KC_DB_SCHEMA: public
 
