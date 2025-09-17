@@ -80,7 +80,7 @@ configured via its web interface.
 
 We will do this in two phases. During the first startup, everything
 except Grist should start. In particular, Keycloak will be available
-at https://$GRIST_DOMAIN/grist (in this example, at
+at `https://$GRIST_DOMAIN/grist` (in this example, at
 https://gristcon.jordigh.com/keycloak ). Once Keycloak is configured,
 we will go back and define `OIDC_CLIENT_SECRET` for Grist so that it
 can connect to Keycloak and use it for authentication.
@@ -98,7 +98,7 @@ this realm. The instructions to do that are
 [here](https://www.keycloak.org/getting-started/getting-started-docker).
 
 **IMPORTANT**: The user must be given the same email as the one
-defined ind `GRIST_DEFAULT_EMAIL`. This will make the first user an
+defined in `GRIST_DEFAULT_EMAIL`. This will make the first user an
 administrator of the Grist instance.
 
 #### Create a Grist OIDC client
@@ -129,7 +129,7 @@ This time all services should start, including Grist.
 
 ## Log in to Grist
 
-Visiting the Grist domain at https://$GRIST_DOMAIN (in this example,
+Visiting the Grist domain at `https://$GRIST_DOMAIN` (in this example,
 https://gristcon.jordigh.com ), should now redirect to Keycloak.
 Logging in with the credentials we used before should work, as well as
 logging out.
@@ -166,7 +166,7 @@ secret** to also obtain a client secret.
 ### Add Github as an identity provider on Keycloak
 
 Log back into the Keycloak admin console at
-https://$GRIST_DOMAIN/keycloak (in this example,
+`https://$GRIST_DOMAIN/keycloak` (in this example,
 https://gristcon.jordigh.com/keycloak ), and make sure you're in the
 `myrealm` realm.
 
