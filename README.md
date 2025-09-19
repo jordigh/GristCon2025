@@ -6,13 +6,17 @@ synthesised from these two existing examples:
 - [Traefik basic auth](https://github.com/gristlabs/grist-core/tree/main/docker-compose-examples/grist-traefik-basic-auth)
 - [Keycloak, Postgres, Redis, Minio](https://github.com/gristlabs/grist-core/tree/main/docker-compose-examples/grist-with-keycloak-postgres-redis-minio)
 
+I encourage you to read the `compose.yaml` file included in this repo.
+It's annotated and has several options you may want to change, once
+you understand their purpose.
+
 # Instructions
 
 Here is how to get a self-hosted Grist instance using this example.
 
 ## Get an Ubuntu server somewhere with a domain name
 
-For this example, we'll be using a t2.small EC2 instance on AWS at my
+For this example, we'll be using a t3.small EC2 instance on AWS at my
 personal domain `gristcon.jordigh.com`.
 
 Use `ssh` to log into your server. We'll be doing most of the
@@ -99,7 +103,9 @@ this realm. The instructions to do that are
 
 **IMPORTANT**: The user must be given the same email as the one
 defined in `GRIST_DEFAULT_EMAIL`. This will make the first user an
-administrator of the Grist instance.
+administrator of the Grist instance. Additionally, make sure to click
+that the user's email is verified (it's an extra toggle in Keycloak).
+Otherwise Grist will not allow a login with an unverified email.
 
 #### Create a Grist OIDC client
 
@@ -107,10 +113,10 @@ The next step is to create a client. The instructions are provided
 [here](https://support.getgrist.com/install/oidc/#example-keycloak).
 Use the following settings:
 
-1. **`clientid`**: `gristclient` (click Next)
+1. **`clientid`**: `gristclient` which matches the value in `compose.yaml` (click Next)
 2. **Client authentication**: On
 3. **Standard flow**: On (click Next)
-4. **Root URL**: `https://GRIST_DOMAIN` (in this example,
+4. **Root URL**: `https://$GRIST_DOMAIN` (in this example,
    `https://gristcon.jordigh.com` )
 5. **Valid redirect URIs**: `/oauth2/callback`
 6. **Valid post logout URIs**: `/*`(click Save)
@@ -130,11 +136,11 @@ This time all services should start, including Grist.
 ## Log in to Grist
 
 Visiting the Grist domain at `https://$GRIST_DOMAIN` (in this example,
-https://gristcon.jordigh.com ), should now redirect to Keycloak.
+`https://gristcon.jordigh.com`), should now redirect to Keycloak.
 Logging in with the credentials we used before should work, as well as
 logging out.
 
-We can verify in the admin panel if everything works well.
+We can verify in the Grist admin panel that everything works well.
 
 ## Adding other login methods
 
@@ -167,15 +173,15 @@ secret** to also obtain a client secret.
 
 Log back into the Keycloak admin console at
 `https://$GRIST_DOMAIN/keycloak` (in this example,
-https://gristcon.jordigh.com/keycloak ), and make sure you're in the
+`https://gristcon.jordigh.com/keycloak`), and make sure you're in the
 `myrealm` realm.
 
 1. Click on **Identity Providers** in the left side bar.
 2. Click on the Github icon
 3. Paste the **Client ID** and **Client Secret** obtained from the
    OAuth application in Github as above.
-4. Scroll down a bit to **Trust Email** and set it to On
-5. Click **Add**.
+4. Click **Add**.
+5. Scroll down a bit to **Trust Email** and set it to On
 
 ### Test github login
 
